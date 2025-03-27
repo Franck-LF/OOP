@@ -7,8 +7,8 @@ from media import Media
 
 class Book(Media):
 
-    def __init__(self, title:str, release_year:int, author:str, pages:int):
-        super().__init__(title, release_year)
+    def __init__(self, title:str = '', release_year:int = 0, author:str = '', pages:int = 0):
+        super().__init__(title, release_year, 'Book')
         self._author = author
         self._pages = pages
 
@@ -24,7 +24,7 @@ class Book(Media):
 
     def to_dict(self):
         dct_temp = super().to_dict()
-        dct_temp.update({'author' : self._author, 'pages' : self._pages})
+        dct_temp.update({'type' : 'Book', 'author' : self._author, 'pages' : self._pages})
         return dct_temp
 
     def from_dict(self, dct):

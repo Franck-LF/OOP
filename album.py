@@ -17,8 +17,8 @@ from typing import List, Dict
 
 class Album(Media):
 
-    def __init__(self, title:str, release_year:int, artist:str, tracks:int, lst_tracks:List = None):
-        super().__init__(title, release_year)
+    def __init__(self, title:str = '', release_year:int = 0, artist:str = '', tracks:int = 0, lst_tracks:List = None):
+        super().__init__(title, release_year, 'Album')
         self._artist = artist
         self._tracks = tracks
         self._lst_tracks = lst_tracks
@@ -41,7 +41,7 @@ class Album(Media):
 
     def to_dict(self) -> Dict:
         dct_temp = super().to_dict()
-        dct_temp.update({'artist' : self._artist, 'tracks' : self._tracks, 'tracks' : self._lst_tracks})
+        dct_temp.update({'type' : 'Album', 'artist' : self._artist, 'tracks' : self._tracks, 'tracks' : self._lst_tracks})
         return dct_temp
 
     def from_dict(self, dct):
@@ -56,7 +56,7 @@ if __name__ == '__main__':
     album = Album('New Album', 2005, 'Lady Gaga', 12)
     print(album)
     print(album.to_dict())
-    album.from_dict({'title' : 'update', 
+    album.from_dict({'title' : 'update',
                      'release_year' : 2022,
                      'artist' : 'Amy Winehouse',
                      'tracks' : 15})

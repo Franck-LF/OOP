@@ -7,8 +7,8 @@ from media import Media
 
 class Movie(Media):
 
-    def __init__(self, title:str, release_year:int, director:str, duration:int):
-        super().__init__(title, release_year)
+    def __init__(self, title:str = '', release_year:int = 0, director:str = '', duration:int = 0):
+        super().__init__(title, release_year, 'Movie')
         self._director = director
         self._duration = duration
 
@@ -24,7 +24,7 @@ class Movie(Media):
 
     def to_dict(self):
         dct_temp = super().to_dict()
-        dct_temp.update({'director' : self._director, 'duration' : self._duration})
+        dct_temp.update({'type' : 'Movie', 'director' : self._director, 'duration' : self._duration})
         return dct_temp
 
     def from_dict(self, dct):

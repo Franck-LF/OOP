@@ -5,7 +5,7 @@
 
 class Track:
 
-    def __init__(self, title:str, length:int):
+    def __init__(self, title:str = '', length:int = 0):
         self._title = title
         self._length = length
 

@@ -13,9 +13,11 @@ from typing import List, Dict
 
 class Media(ABC):
 
-    def __init__(self, title:str, release_year:int):
+    def __init__(self, title:str, release_year:int, type:str):
         self._title = title
         self._release_year = release_year
+        assert type in ['Book', 'Movie', 'Album']
+        self._type = type
 
     def get_title(self):
         ''' accessor '''
@@ -24,6 +26,9 @@ class Media(ABC):
     def get_release_year(self):
         ''' accessor '''
         return self._release_year
+
+    def get_type(self):
+        return self._type
 
     @abstractmethod
     def display_info(self):
