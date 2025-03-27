@@ -1,0 +1,14 @@
+tp_bibliotheque_mongo/
+│
+├── models/
+│   ├── media.py          # Classe abstraite Media
+│   ├── book.py           # Classe Book
+│   ├── movie.py          # Classe Movie
+│   ├── album.py          # Classe Album
+│   ├── track.py          # Classe Track
+│
+├── library.py            # Classe Library
+├── database.py           # Connexion MongoDB
+├── main.py               # Menu console utilisateur
+├── requirements.txt      # Dépendances (pymongo)
+└── README.md             # Instructions d'exécution
