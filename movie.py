@@ -13,14 +13,18 @@ class Movie(Media):
         self._duration = duration
 
     def display_info(self):
-        pass
+        print('Movie')
+        print("title", self._title)
+        print("release year", self._release_year)
+        print("director", self._director)
+        print("duration", self._duration)
 
     def __str__(self) -> str:
-        return f"Movie {self._title}, {self._release_year}, {self._director}, {self._duration}"
+        return f"Movie: {self._title}, {self._release_year}, {self._director}, {self._duration}"
 
     def to_dict(self):
         dct_temp = super().to_dict()
-        dct_temp.update({'author' : self._director, 'pages' : self._duration})
+        dct_temp.update({'director' : self._director, 'duration' : self._duration})
         return dct_temp
 
     def from_dict(self, dct):

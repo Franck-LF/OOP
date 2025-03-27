@@ -13,10 +13,14 @@ class Book(Media):
         self._pages = pages
 
     def display_info(self):
-        pass
+        print('Book')
+        print("title", self._title)
+        print("release year", self._release_year)
+        print("author", self._author)
+        print("nb pages", self._pages)
 
     def __str__(self) -> str:
-        return f"Book {self._title}, {self._release_year}, {self._author}, {self._pages}"
+        return f"Book: {self._title}, {self._release_year}, {self._author}, {self._pages}"
 
     def to_dict(self):
         dct_temp = super().to_dict()
@@ -26,6 +30,7 @@ class Book(Media):
     def from_dict(self, dct):
         assert all([key in ('title', 'release_year', 'author', 'pages') for key in dct.keys()])
         self.__init__(dct['title'], dct['release_year'], dct['author'], dct['pages'])
+
 
 
 

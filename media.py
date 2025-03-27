@@ -17,6 +17,14 @@ class Media(ABC):
         self._title = title
         self._release_year = release_year
 
+    def get_title(self):
+        ''' accessor '''
+        return self._title
+
+    def get_release_year(self):
+        ''' accessor '''
+        return self._release_year
+
     @abstractmethod
     def display_info(self):
         pass
@@ -28,16 +36,9 @@ class Media(ABC):
         return self._release_year < other.release_year
     
     def to_dict(self):
-        return {'title' : self._title, 
+        return {'title' : self._title,
                 'release_year' : self._release_year}
 
+    @abstractmethod
     def from_dict(self, dct):
-        assert all([key in ('title', 'release_year') for key in dct.keys()])
-        self = Media(dct['title'], dct['release_year'])
-
-
-
-
-
-# if __name__ == '__main__':
-#     media = Media('test', '1980')
+        pass
