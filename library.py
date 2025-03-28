@@ -17,6 +17,7 @@ from media import Media
 from book import Book
 from movie import Movie
 from album import Album
+from track import Track
 from typing import List, Dict
 
 # MongoDB
@@ -33,7 +34,7 @@ class Library:
          - save the list into MongoDB,
          - load a library from MongoDB. 
     '''
-        
+
     def __init__(self):
         ''' Library constructor.
             Initialize the media list to an empty list.
@@ -84,7 +85,7 @@ class Library:
     def display_all(self):
         ''' Display all medias '''
         for media in self._lst_medias:
-            print(media)
+            print(media, '\n')
 
     def save_to_mongo(self):
         ''' Save all medias in MongoDB '''
@@ -112,7 +113,7 @@ class Library:
         if type == 'Book':  return Book()
         if type == 'Movie': return Movie()
         if type == 'Album': return Album()
-    
+
     def load_from_mongo(self):
         ''' Load list of medias from MongoDB collection. '''
 
@@ -134,19 +135,23 @@ class Library:
 
 if __name__ == '__main__':
     library = Library()
-    # print(len(library))
-    # library.display_all()
-    # library.add_media(Book('Little Sisters', 1870, 'Jane', 300))
-    # library.add_media(Movie('Jaws', 1974, 'S. Spielberg', 90))
-    # library.add_media(Album('Undercover', 2022, 'Papa Roach', 65))
-    # print(len(library))
-    # library.display_all()
-    # print(library.list_medias())
-    # print(library)
-    # library.save_to_mongo()
-    library.load_from_mongo()
+    print(len(library))
+    library.display_all()
+    library.add_media(Book('Little Sisters', 1870, 'Jane', 300))
+    library.add_media(Movie('Jaws', 1974, 'S. Spielberg', 90))
+    track1 = Track('Biz', 195)
+    track2 = Track('Jeff', 202)
+    track3 = Track('Cece', 188)
+    lst_tracks = [track1, track2, track3]
+    library.add_media(Album('Undercover', 2022, 'Papa Roach', lst_tracks))
+    print(len(library))
+    library.display_all()
+    print(library.list_medias())
+    print(library)
+    library.save_to_mongo()
+    # library.load_from_mongo()
     # Library.delete_collection_mongoDB()
     # library.remove_media('Jaws')
-    print('nb medias:', len(library))
-    library.display_all()
+    # print('nb medias:', len(library))
+    # library.display_all()
     # print("search:", library.search('Little Sisters'))
