@@ -43,6 +43,7 @@ class Library:
         for item in self._lst_medias:
             if item.get_title() == title:
                 self._lst_medias.remove(item)
+                return
 
     def search(self, title:str):
         for item in self._lst_medias:
