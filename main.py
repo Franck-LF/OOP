@@ -14,6 +14,7 @@ from media import Media
 from book import Book
 from movie import Movie
 from album import Album
+from track import Track
 
 # MongoDB
 import pymongo
@@ -29,7 +30,7 @@ def print_menu(correct_answer_format):
     print('|  3: Supprimer un média        |')
     print('|  4: Rechercher un média       |')
     print('|  5: Afficher tous les médias  |')
-    print("|  6: Quitter l'applicatin      |")
+    print("|  6: Quitter l'application     |")
     print('+-------------------------------+')
 
     if correct_answer_format:
@@ -38,16 +39,32 @@ def print_menu(correct_answer_format):
 
 
 def print_media_type():
+    print('-*-*-*-*-*-*-*-*-*-*-*-*-')
     print('0: Quitter')
     print('1: Ajouter un livre')
     print('2: Ajouter un film')
     print('3: Ajouter un album')
+    print('-*-*-*-*-*-*-*-*-*-*-*-*-')
     return input('Choisir le type de média\n')
 
 
 def get_lst_tracks():
-    ''' Build a media from user console input '''
-    pass
+    ''' Ask user to write infos about tracks (title + length)
+        Return a list of tracks. '''
+
+    lst_tracks = []
+    answer_track = None
+
+    while answer_track != 'n':
+        answer_track = input('Ajouter une piste (o/n)\n')
+
+        if answer_track == 'o':
+            title  = input('Saisir le titre de la piste\n')
+            length = int(input('Saisir la durée de la piste\n'))
+            lst_tracks.append(Track(title, length))
+
+    return lst_tracks
+
 
 def get_media(answer_media_type):
     ''' Build a media from user console input '''
@@ -70,9 +87,10 @@ def get_media(answer_media_type):
         title = input("Saisir le titre de l'album\n")
         year  = int(input("Saisir l'année de sortie\n"))
         artist = input("Saisir le nom de l'artiste\n")
-        lst_tracks = []
-        tracks = int(input("Saisir le nombre de tracks\n"))
+        tracks = get_lst_tracks()
         return dict(zip(['type', 'title', 'release_year', 'artist', 'tracks'], ['Album', title, year, artist, tracks]))
+        return dict(zip(['type', 'title', 'release_year', 'artist', 'tracks', 'lst_tracks'],
+                        ['Album', title, year, artist, tracks, lst_tracks]))
 
 
 def connect_database():
@@ -100,7 +118,7 @@ col_medias = None
 while answer != 6:
 
     answer = print_menu(correct_answer_format)
-    correct_answer_format = answer in '123456'
+    correct_answer_format = answer and answer in '123456'
 
     if correct_answer_format:
         answer = int(answer)
@@ -159,5 +177,4 @@ while answer != 6:
 
 
 print("*** FIN DE L'APPLICATION ***")
-
 
