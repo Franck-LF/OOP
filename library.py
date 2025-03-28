@@ -26,32 +26,52 @@ from pymongo.server_api import ServerApi
 
 
 class Library:
-
+    ''' Class representing a 'library' object,
+        object used to manage medias (Books, Movie, Album).
+        contains a list of medias
+        and methods to :
+         - save the list into MongoDB,
+         - load a library from MongoDB. 
+    '''
+        
     def __init__(self):
+        ''' Library constructor.
+            Initialize the media list to an empty list.
+        '''
         self._lst_medias:List = []
 
     def __len__(self) -> int:
+        ''' Return the length of the library i.e. the numer of medias '''
         return len(self._lst_medias)
 
     def __str__(self) -> str:
+        ''' Return a string with all medias informations '''
         return '\n'.join([str(media) for media in self._lst_medias])
 
     def add_media(self, media:Media):
+        ''' Add a media to the library '''
         self._lst_medias.append(media)
 
     def remove_media(self, title:str):
+        ''' Remove a media from the library '''
         for item in self._lst_medias:
             if item.get_title() == title:
                 self._lst_medias.remove(item)
                 return
 
     def search(self, title:str):
+        ''' Search a media in the library '''
         for item in self._lst_medias:
             if item.get_title() == title:
                 return item
         return None
 
     def list_medias(self, order_by:str = 'title'):
+        ''' Return the list of medias
+
+            Arg: order_by ('title' or 'year)
+             - to sort the list according.
+        '''
         if order_by == 'title':
             self._lst_medias.sort(key = lambda x : x.get_title())
             return self._lst_medias
@@ -62,10 +82,12 @@ class Library:
             assert False
 
     def display_all(self):
+        ''' Display all medias '''
         for media in self._lst_medias:
             print(media)
 
     def save_to_mongo(self):
+        ''' Save all medias in MongoDB '''
         if len(self):
             client = pymongo.MongoClient("mongodb://localhost:27017/")
             mydb = client["multimedia"]
@@ -75,6 +97,7 @@ class Library:
 
     @staticmethod
     def delete_collection_mongoDB():
+        ''' Delete the media collection in MongoDB '''
         client = pymongo.MongoClient("mongodb://localhost:27017/")
         mydb = client["multimedia"]
         col_medias = mydb["medias"]
@@ -82,6 +105,10 @@ class Library:
 
     @staticmethod
     def __build_object_from_type(type:str) -> Media:
+        ''' Return an empty media according to type.
+        
+            Arg: type (string): ('Book', 'Movie', 'Album')
+        '''
         if type == 'Book':  return Book()
         if type == 'Movie': return Movie()
         if type == 'Album': return Album()
