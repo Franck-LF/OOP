@@ -10,6 +10,10 @@
 
 
 from library import Library
+from media import Media
+from book import Book
+from movie import Movie
+from album import Album
 
 # MongoDB
 import pymongo
@@ -19,14 +23,14 @@ from pymongo.server_api import ServerApi
 
 
 def print_menu(correct_answer_format):
-    print('****************************')
-    print('1: Connexion à MongoDB')
-    print('2: Ajouter un média')
-    print('3: Supprimer un média')
-    print('4: Rechercher un média')
-    print('5: Afficher tous les médias')
-    print("6: Quitter l'applicatin")
-    print('****************************')
+    print('+-------------------------------+')
+    print('|  1: Connexion à MongoDB       |')
+    print('|  2: Ajouter un média          |')
+    print('|  3: Supprimer un média        |')
+    print('|  4: Rechercher un média       |')
+    print('|  5: Afficher tous les médias  |')
+    print("|  6: Quitter l'applicatin      |")
+    print('+-------------------------------+')
 
     if correct_answer_format:
         return input('Saisir une commande\n')
@@ -41,28 +45,34 @@ def print_media_type():
     return input('Choisir le type de média\n')
 
 
+def get_lst_tracks():
+    ''' Build a media from user console input '''
+    pass
+
 def get_media(answer_media_type):
+    ''' Build a media from user console input '''
 
     if answer_media_type == 1:
         title = input("Saisir le titre du livre\n")
         year  = int(input("Saisir l'année de publication\n"))
         author = input("Saisir le nom de l'auteur\n")
         pages = int(input("Saisir le nombre de pages\n"))
-        return dict(zip(['title', 'release_year', 'author', 'pages'], [title, year, author, pages]))
+        return dict(zip(['type', 'title', 'release_year', 'author', 'pages'], ['Book', title, year, author, pages]))
 
     elif answer_media_type == 2:
         title = input("Saisir le titre du film\n")
         year  = int(input("Saisir l'année de sortie\n"))
         director = input("Saisir le nom du réalisateur\n")
         duration = int(input("Saisir la durée (en minutes)\n"))
-        return dict(zip(['title', 'release_year', 'director', 'duration'], [title, year, director, duration]))
+        return dict(zip(['type', 'title', 'release_year', 'director', 'duration'], ['Movie', title, year, director, duration]))
 
     elif answer_media_type == 3:
         title = input("Saisir le titre de l'album\n")
         year  = int(input("Saisir l'année de sortie\n"))
         artist = input("Saisir le nom de l'artiste\n")
+        lst_tracks = []
         tracks = int(input("Saisir le nombre de tracks\n"))
-        return dict(zip(['title', 'release_year', 'artist', 'tracks'], [title, year, artist, tracks]))
+        return dict(zip(['type', 'title', 'release_year', 'artist', 'tracks'], ['Album', title, year, artist, tracks]))
 
 
 def connect_database():
@@ -79,16 +89,7 @@ def connect_database():
 
 def library_from_mongoDB():
     library = Library()
-
-    for dct in col_medias.find({}):
-        assert 'type' in dct.keys() and '_id' in dct.keys()
-        assert dct['type'] in ['Book', 'Movie', 'Album']
-        media = Library.__build_object_from_type(dct['type'])
-        del dct['_id']
-        del dct['type']
-        media.from_dict(dct)
-        library.add_media(media)
-
+    library.load_from_mongo()
     return library
 
 
@@ -125,23 +126,36 @@ while answer != 6:
                     
                     if answer_media_type:
                         dct_media = get_media(answer_media_type)
-                        print(dct_media)
                         col_medias.insert_one(dct_media)
                         answer_media_type = 0
 
     elif answer == 3:
         # Delete a media
-        answer_media_to_delete = input("Nom du média à supprimer\n")
-        library = library_from_mongoDB()
+        if col_medias == None:
+            print("Connexion à la base de données requise")
+        else:
+            answer_media_to_delete = input("Nom du média à supprimer\n")
+            print(answer_media_to_delete)
+            col_medias.delete_one({'title': f'{answer_media_to_delete}'})
 
     elif answer == 4:
         # Look for a media
-        library = library_from_mongoDB()
+        if col_medias == None:
+            print("Connexion à la base de données requise")
+        else:
+            answer_media_to_search = input("Nom du média à rechercher\n")
+            library = library_from_mongoDB()
+            media = library.search(answer_media_to_search)
+            if media:
+                print(media)
 
     elif answer == 5:
         # Display all medias
-        library = library_from_mongoDB()
-        library.display_all()
+        if col_medias == None:
+            print("Connexion à la base de données requise")
+        else:
+            library = library_from_mongoDB()
+            library.display_all()
 
 
 print("*** FIN DE L'APPLICATION ***")
