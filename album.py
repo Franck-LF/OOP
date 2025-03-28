@@ -38,9 +38,13 @@ class Album(Media):
         self._tracks = []
 
         for track in tracks:
-            assert isinstance(track, Track)
-            self._tracks.append(track)
-            track.set_album(self)
+            if isinstance(track, Track):
+                self._tracks.append(track)
+                track.set_album(self)
+            elif isinstance(track, dict):
+                t = Track(track['title'], track['length'])
+                self._tracks.append(t)
+                t.set_album(self)
 
 
     def display_info(self):
@@ -63,7 +67,8 @@ class Album(Media):
     def to_dict(self) -> Dict:
         ''' convert album into dictionary '''
         dct_temp = super().to_dict()
-        dct_temp.update({'type' : 'Album', 'artist' : self._artist, 'tracks' : self._tracks})
+        lst_dct_tracks = [track.to_dict() for track in self._tracks]
+        dct_temp.update({'type' : 'Album', 'artist' : self._artist, 'tracks' : lst_dct_tracks})
         return dct_temp
 
     def from_dict(self, dct:Dict):
@@ -88,3 +93,4 @@ if __name__ == '__main__':
                      'artist' : 'Amy Winehouse',
                      'tracks' : lst_tracks})
     print(album)
+    print(album.to_dict())
