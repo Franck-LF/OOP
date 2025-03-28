@@ -7,7 +7,7 @@ class Track:
     ''' Class object representing a track '''
 
     def __init__(self, title:str = '', length:int = 0):
-        ''' track Constructor 
+        ''' track Constructor
 
             Args:
              - title (string): title of the track,
@@ -15,6 +15,7 @@ class Track:
         '''
         self._title = title
         self._length = length
+        self._album = None # Initialized once the track is set to an album.
 
     def display_info(self):
         print('Track')
@@ -23,6 +24,9 @@ class Track:
 
     def __str__(self) -> str:
         return f"Track: {self._title}, {self._length}"
+
+    def set_album(self, album):
+        self._album = album
 
     def to_dict(self):
         return {'title' : self._title, 'length' : self._length}
