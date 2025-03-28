@@ -16,8 +16,24 @@ from typing import List, Dict
 
 
 class Album(Media):
+    ''' Class object representing an album
+        contains all informations about album
+        and methods to convert it into dictionary
+        and update an album from a dictionary. 
+    '''
 
     def __init__(self, title:str = '', release_year:int = 0, artist:str = '', tracks:int = 0, lst_tracks:List = None):
+        ''' Album Constructor.
+
+            Args:
+             - title (string): title of the album,
+             - release_year (int): year of release,
+             - artist (string): with name of the artist,
+             - tracks (int): number of tracks in the album,
+             - lst_tracks (List(Track)): list of track objects.
+
+            title and release_year are initialized by the parent class (Media). 
+        '''
         super().__init__(title, release_year, 'Album')
         self._artist = artist
         self._tracks = tracks
@@ -40,11 +56,12 @@ class Album(Media):
         return len(self._lst_tracks) if self._lst_tracks else 0
 
     def to_dict(self) -> Dict:
+        ''' convert album into dictionary '''
         dct_temp = super().to_dict()
         dct_temp.update({'type' : 'Album', 'artist' : self._artist, 'tracks' : self._tracks, 'tracks' : self._lst_tracks})
         return dct_temp
 
-    def from_dict(self, dct):
+    def from_dict(self, dct:Dict):
         assert all([key in ('title', 'release_year', 'artist', 'tracks') for key in dct.keys()])
         self.__init__(dct['title'], dct['release_year'], dct['artist'], dct['tracks'])
 
