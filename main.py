@@ -39,12 +39,12 @@ def print_menu(correct_answer_format):
 
 
 def print_media_type():
-    print('-*-*-*-*-*-*-*-*-*-*-*-*-')
-    print('0: Quitter')
-    print('1: Ajouter un livre')
-    print('2: Ajouter un film')
-    print('3: Ajouter un album')
-    print('-*-*-*-*-*-*-*-*-*-*-*-*-')
+    print('+----------------------+')
+    print('| 0: Quitter           |')
+    print('| 1: Ajouter un livre  |')
+    print('| 2: Ajouter un film   |')
+    print('| 3: Ajouter un album  |')
+    print('+----------------------+')
     return input('Choisir le type de média\n')
 
 
@@ -61,7 +61,7 @@ def get_lst_tracks():
         if answer_track == 'o':
             title  = input('Saisir le titre de la piste\n')
             length = int(input('Saisir la durée de la piste\n'))
-            lst_tracks.append(Track(title, length))
+            lst_tracks.append(Track(title, length).to_dict())
 
     return lst_tracks
 
@@ -88,9 +88,9 @@ def get_media(answer_media_type):
         year  = int(input("Saisir l'année de sortie\n"))
         artist = input("Saisir le nom de l'artiste\n")
         tracks = get_lst_tracks()
-        return dict(zip(['type', 'title', 'release_year', 'artist', 'tracks'], ['Album', title, year, artist, tracks]))
-        return dict(zip(['type', 'title', 'release_year', 'artist', 'tracks', 'lst_tracks'],
-                        ['Album', title, year, artist, tracks, lst_tracks]))
+        print(tracks)
+        return dict(zip(['type', 'title', 'release_year', 'artist', 'tracks'],
+                        ['Album', title, year, artist, tracks]))
 
 
 def connect_database():
@@ -165,7 +165,7 @@ while answer != 6:
             library = library_from_mongoDB()
             media = library.search(answer_media_to_search)
             if media:
-                print(media)
+                print(media, '\n')
 
     elif answer == 5:
         # Display all medias
